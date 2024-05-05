@@ -47,6 +47,8 @@ Command PhaseScriptExecution failed with a nonzero exit code
 これでも原因はわからないので、詳細なログをダウンロードして確認します。
 成果物 -> **Logs for {アプリ名} build** を確認してみます。
 
+![XcodeCloud詳細ログ](https://raw.githubusercontent.com/mrs1669/zenn-article/main/Resources/Images/20240505_swiftlint-xcode15/xcodecloud-artifact.png)
+
 zipファイルになっているので解凍すると、5個ほどログファイルが入っていて今回は `xcodebuild-build.log` をチェックします。
 
 5000行程度のログファイルなので、探すのが大変ですが `fail` のワードで探したらエラー箇所がすぐ見つかりました。
@@ -67,7 +69,7 @@ zipファイルになっているので解凍すると、5個ほどログファ�
 
 ## 解決法
 
-最終的に色々調べてたどり着いた解決法は、[ENABLE_USER_SCRIPT_SANDBOXING](https://developer.apple.com/documentation/xcode/build-settings-reference?ref=thisdevbrain.com#User-Script-Sandboxing) の値を NO とするものです。
+最終的に色々調べてたどり着いた解決法は、[ENABLE_USER_SCRIPT_SANDBOXING](https://developer.apple.com/documentation/xcode/build-settings-reference?ref=thisdevbrain.com#User-Script-Sandboxing) の値を **NO** とするものです。
 
 `ENABLE_USER_SCRIPT_SANDBOXING` のフラグは、ソースファイルやビルド時の中間オブジェクトに対してスクリプトフェーズがアクセスすることをブロックするか制御しているようです。具体的には、記述したSwiftのファイルに対してSwiftLintが静的解析する権限の制御ということになります。
 このフラグが、Xcode14まではデフォルトで **NO** (アクセス権のブロックを**しない**、自由にファイルを監視できる) でしたが、Xcode15からデフォルトで **YES** (アクセス権をブロック) の状態に変更されました。
