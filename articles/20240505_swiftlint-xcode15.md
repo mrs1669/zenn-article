@@ -79,6 +79,11 @@ zipファイルになっているので解凍すると、5個ほどログファ�
 https://zenn.dev/mxxaxxm/articles/f176caa8e4e63b
 https://qiita.com/shunsuke250/items/5bc1a9613290a2647a11
 
+差分としては以下のような差分になるはずです。
+``` pbxproj: {プロジェクト名}.xcodeproj/project.pbxproj
++ ENABLE_USER_SCRIPT_SANDBOXING = NO;
+```
+
 :::message
 ただ注意点として、SwiftLintの[README](https://github.com/realm/SwiftLint/blob/d1e5810b274dd1f9572a9199144619d41733768f/README.md#xcode)にも対応法の記載はありますが、この対応法はSwiftLintを利用するための単なる回避策であり、Appleとしても非推奨のようですので、自己責任で行い注意する必要がありそうです。
 :::
