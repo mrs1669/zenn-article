@@ -12,6 +12,7 @@ published: false
 原因がXcode15に起因するものであることが判明したので共有します。
 
 ## 環境
+
 > Xcode Cloud Xcodeバージョン: Latest Release(Xcode 15.3 (15E204a))
 > Xcode Cloud macOSバージョン: Latest Release(macOS Sonoma 14.4.1 (23E224))
 > SwiftLintバージョン: 0.54.0
@@ -21,14 +22,15 @@ published: false
 GitHub上では
 
 ``` shell: GitHub エラー文
-❌ Command PhaseScriptExecution failed with a nonzero exit code
+🛑 Command PhaseScriptExecution failed with a nonzero exit code
 ```
 
 👆のエラーで怒られています。これでは原因がわからないので、
 
 -----
 
-Xcode Cloudに詳細なログ見に行くと👇のようなログになっています。
+Xcode Cloudに詳細なログを見にいくと👇のようなログになっています。
+![xcodecloud-log](https://raw.githubusercontent.com/mrs1669/zenn-article/main/Resources/Images/20240505_swiftlint-xcode15/xcodecloud-log.png)
 
 どうやら、**Run xcodebuild build** の項目で、`xcodebuild`で失敗していそうです。
 
@@ -37,5 +39,5 @@ Run command: 'xcodebuild build -scheme {scheme名} -project /Volumes/workspace/r
 ```
 
 ``` shell: Xcode Cloud エラー文
-❌ Command exited with non-zero exit-code: 65
+🛑 Command exited with non-zero exit-code: 65
 ```
