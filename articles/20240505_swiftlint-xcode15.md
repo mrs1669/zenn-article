@@ -75,10 +75,16 @@ zipファイルになっているので解凍すると、5個ほどログファ�
 具体的な対応方法は以下の記事が参考になると思います。
 
 https://zenn.dev/mxxaxxm/articles/f176caa8e4e63b
-
 https://qiita.com/shunsuke250/items/5bc1a9613290a2647a11
 
 :::message
 ただ注意点として、SwiftLintの[README](https://github.com/realm/SwiftLint/blob/d1e5810b274dd1f9572a9199144619d41733768f/README.md#xcode)にも対応法の記載はありますが、この対応法はSwiftLintを利用するための単なる回避策であり、Appleとしても非推奨のようですので、自己責任で行い注意する必要がありそうです。
 :::
 
+## 参考文献
+https://thisdevbrain.com/swiftlint-permission-issue/
+https://developer.apple.com/documentation/xcode/build-settings-reference?ref=thisdevbrain.com#User-Script-Sandboxing
+
+#### 対応法
+https://zenn.dev/mxxaxxm/articles/f176caa8e4e63b
+https://qiita.com/shunsuke250/items/5bc1a9613290a2647a11
