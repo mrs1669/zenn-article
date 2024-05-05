@@ -11,6 +11,11 @@ published: false
 新規でXcodeプロジェクトを作成してSwiftLintを導入したところ、Xcode CloudがFailする事象が発生しました。
 原因がXcode15に起因するものであることが判明したので共有します。
 
+## 環境
+> Xcode Cloud Xcodeバージョン: Latest Release(Xcode 15.3 (15E204a))
+> Xcode Cloud macOSバージョン: Latest Release(macOS Sonoma 14.4.1 (23E224))
+> SwiftLintバージョン: 0.54.0
+
 ## Failする事象
 
 GitHub上では
