@@ -47,6 +47,8 @@ Command PhaseScriptExecution failed with a nonzero exit code
 これでも原因はわからないので、詳細なログをダウンロードして確認します。
 成果物 -> **Logs for {アプリ名} build** を確認してみます。
 
+![XcodeCloud詳細ログ](https://raw.githubusercontent.com/mrs1669/zenn-article/main/Resources/Images/20240505_swiftlint-xcode15/xcodecloud-artifact.png)
+
 zipファイルになっているので解凍すると、5個ほどログファイルが入っていて今回は `xcodebuild-build.log` をチェックします。
 
 5000行程度のログファイルなので、探すのが大変ですが `fail` のワードで探したらエラー箇所がすぐ見つかりました。
@@ -67,7 +69,7 @@ zipファイルになっているので解凍すると、5個ほどログファ�
 
 ## 解決法
 
-最終的に色々調べてたどり着いた解決法は、[ENABLE_USER_SCRIPT_SANDBOXING](https://developer.apple.com/documentation/xcode/build-settings-reference?ref=thisdevbrain.com#User-Script-Sandboxing) の値を NO とするものです。
+最終的に色々調べてたどり着いた解決法は、[ENABLE_USER_SCRIPT_SANDBOXING](https://developer.apple.com/documentation/xcode/build-settings-reference?ref=thisdevbrain.com#User-Script-Sandboxing) の値を **NO** とするものです。
 
 `ENABLE_USER_SCRIPT_SANDBOXING` のフラグは、ソースファイルやビルド時の中間オブジェクトに対してスクリプトフェーズがアクセスすることをブロックするか制御しているようです。具体的には、記述したSwiftのファイルに対してSwiftLintが静的解析する権限の制御ということになります。
 このフラグが、Xcode14まではデフォルトで **NO** (アクセス権のブロックを**しない**、自由にファイルを監視できる) でしたが、Xcode15からデフォルトで **YES** (アクセス権をブロック) の状態に変更されました。
@@ -76,6 +78,11 @@ zipファイルになっているので解凍すると、5個ほどログファ�
 
 https://zenn.dev/mxxaxxm/articles/f176caa8e4e63b
 https://qiita.com/shunsuke250/items/5bc1a9613290a2647a11
+
+差分としては以下のような差分になるはずです。
+``` pbxproj: {プロジェクト名}.xcodeproj/project.pbxproj
++ ENABLE_USER_SCRIPT_SANDBOXING = NO;
+```
 
 :::message
 ただ注意点として、SwiftLintの[README](https://github.com/realm/SwiftLint/blob/d1e5810b274dd1f9572a9199144619d41733768f/README.md#xcode)にも対応法の記載はありますが、この対応法はSwiftLintを利用するための単なる回避策であり、Appleとしても非推奨のようですので、自己責任で行い注意する必要がありそうです。
