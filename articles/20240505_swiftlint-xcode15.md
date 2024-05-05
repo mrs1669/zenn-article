@@ -8,7 +8,7 @@ published: false
 
 ## 概要
 
-新規でXcodeプロジェクトを作成してSwiftLintを導入したところ、Xcode CloudがFailする事象が発生しました。
+新規でXcodeプロジェクトを作成してSwiftLintを導入したところ、Xcode CloudがFailする事象が発生しました。(ローカルは問題なくビルド可能です)
 原因がXcode15に起因するものであることが判明したので共有します。
 
 ## 環境
@@ -61,3 +61,24 @@ zipファイルになっているので解凍すると、5個ほどログファ�
 ```
 
 > **Error: No lintable files found at paths: ''**
+
+どうやらSwiftLintのパス指定が原因のようです。
+ただ、そこから `swiftlint.yml` の included, excluded あたりをいじっても治りませんでした...
+
+## 解決法
+
+最終的に色々調べてたどり着いた解決法は、[ENABLE_USER_SCRIPT_SANDBOXING](https://developer.apple.com/documentation/xcode/build-settings-reference?ref=thisdevbrain.com#User-Script-Sandboxing) の値を NO とするものです。
+
+`ENABLE_USER_SCRIPT_SANDBOXING` のフラグは、ソースファイルやビルド時の中間オブジェクトに対してスクリプトフェーズがアクセスすることをブロックするか制御しているようです。具体的には、記述したSwiftのファイルに対してSwiftLintが静的解析する権限の制御ということになります。
+このフラグが、Xcode14まではデフォルトで **NO** (アクセス権のブロックを**しない**、自由にファイルを監視できる) でしたが、Xcode15からデフォルトで **YES** (アクセス権をブロック) の状態に変更されました。
+
+具体的な対応方法は以下の記事が参考になると思います。
+
+https://zenn.dev/mxxaxxm/articles/f176caa8e4e63b
+
+https://qiita.com/shunsuke250/items/5bc1a9613290a2647a11
+
+:::message
+ただ注意点として、SwiftLintの[README](https://github.com/realm/SwiftLint/blob/d1e5810b274dd1f9572a9199144619d41733768f/README.md#xcode)にも対応法の記載はありますが、この対応法はSwiftLintを利用するための単なる回避策であり、Appleとしても非推奨のようですので、自己責任で行い注意する必要がありそうです。
+:::
+
