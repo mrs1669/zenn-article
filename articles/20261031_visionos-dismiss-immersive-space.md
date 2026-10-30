@@ -1,5 +1,5 @@
 ---
-title: "【Apple Vision Pro】dismissImmersiveSpace() のあとの onDisappear、シミュレーターと実機で桁違いだった件"
+title: "【Apple Vision Pro】Immersive Spaceを閉じた後のonDisappear、シミュレーターと実機で桁違いだった件"
 emoji: "🚪"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: [visionOS, SwiftUI, RealityKit, AppleVisionPro, ImmersiveSpace]
